@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stream Event Viewer</title>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="navbar">
+    <h1>Welcome, {{ user.username }}!</h1>
+</div>
+<div class="row mx-auto">
+    <div class="col-sm-8" id="twitch-embed"></div>
+    <div class="col-sm-4">
+    <b>Events</b>
+        <ul class="list-group" id="notifylist">
+            {% for event in latest_events %}
+            <li class="list-group-item">{{event.text}}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
+<script>
+
+    new Twitch.Embed("twitch-embed", {
+        width: 754,
+        height: 480,
+        channel: "{{ user.favorite_streamer }}"
+    });
+
+    const nl = document.querySelector("#notifylist");
+    const url = "{{ url }}";
+    const streamer_name = "{{ user.favorite_streamer }}";
+    document.addEventListener('DOMContentLoaded', function() {
+      const ws = new WebSocket('ws://'+url+'/ws/events/'+streamer_name+'/');
+      ws.onmessage = function(event) {
+          let el = document.createElement("li");
+          let data = JSON.parse(event.data);
+          el.innerHTML = data.message;
+          el.className += " list-group-item";
+          nl.insertBefore(el, nl.firstElementChild);
+          if (nl.childElementCount > 10) {
+            nl.lastElementChild.remove();
+          }
+      };
+      document.ws = ws;
+    });
+</script>
+</body>
+</html>

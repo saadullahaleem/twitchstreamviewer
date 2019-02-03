@@ -1,0 +1,4 @@
+venv/*
+streameventviewer/local.py
+.DS_Store
+.idea/*

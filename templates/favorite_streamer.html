@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stream Event Viewer</title>
+</head>
+{% include 'navbar.html' %}
+<body>
+    <h1>Set your favorite streamer here</h1>
+    <form class="form-group" action="/streamer/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+</body>
+</html>
