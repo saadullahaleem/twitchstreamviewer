@@ -1,6 +1,5 @@
 **Streams and Events Viewer:**
-
-This app lets a user log in with their twitch account and set their favorite streamer to view their live stream and events as they happen.
+This app lets a user log in with their twitch account and set their favorite streamer to view their live stream and events as they happen. if you were to go ahead and open a stream in this application and then follow that streamer, you would see that that event is pushed to the streaming page in real-time.
 
 **Tools used:**
 - I used Django with it's templating engine for the complete application.
