@@ -6,9 +6,21 @@ This app lets a user log in with their twitch account and set their favorite str
 - Django channels used for the websockets.
 - The latest version of Twitch's API for authentication and events.
 
-**Approach**:
+**Approach:**
 - The [OAuth Implicit Code Flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#oauth-implicit-code-flow)  as described in Twitch Developer docs is used to authenticate users to the app using their twitch accounts.
 - After a user logs in, they're presented with a page that lets them set their favorite streamer.  
 -  The new Twitch provides a webhook for instant notification of follows as they occur. I've used this webhook which in turn notifies a callback URL on this application. The callback URL saves the event to the database and then pushes it to the websockets room of the streamer.
 - The user is redirected to the stream page which has the embedded stream along with a list of 10 most recent follows that the user has received. 
 - These events are initially fetched through the database but the new ones are pushed through the websocket as they happen.
+
+Additionally, I also wanted to have cheers/bits received through viewers as events by using Twitch's [IRC interface](https://dev.twitch.tv/docs/irc/). I've made a bot that listens to the incoming chat messages and filters out the ones with cheers but incorporating it would have required either celery or python-rq for which I didn't have any time left. If you'd like to check out how the IRC interface is used to notify when bits/cheers are received, you can view the sample code in [this repo.](https://github.com/saadullahaleem/twitch-chat-bot/blob/master/bot.py)
+
+**Answers to Questions:**
+
+> -   How would you deploy the above on AWS? (ideally a rough architecture diagram will help)
+
+TBA
+
+> -   Where do you see bottlenecks in your proposed architecture and how would you approach scaling this app starting from 100 reqs/day to 900MM reqs/day over 6 months?
+
+TBA
