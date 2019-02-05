@@ -13,7 +13,6 @@ COPY ./ streameventviewer
 
 EXPOSE 7000
 
-#CMD ./streameventviewer/scripts/wait-for-it.sh 10
-
-## Run migrations
-#CMD python ./streameventviewer/manage.py migrate
+# default command to execute
+#CMD exec gunicorn streameventviewer.wsgi:application --bind 0.0.0.0:7000 --workers 3
+CMD daphne -b 0.0.0.0 -p 7000 streameventviewer.asgi:application
