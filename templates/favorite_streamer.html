@@ -6,6 +6,11 @@
 </head>
 {% include 'navbar.html' %}
 <body>
+    {% if error_message %}
+        <div class="alert alert-danger">
+          <strong>{{ error_message }}</strong>
+        </div>
+    {% endif %}
     <h1>Set your favorite streamer here</h1>
     <form class="form-group" action="/streamer/" method="post">
     {% csrf_token %}

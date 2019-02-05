@@ -10,6 +10,7 @@ from stream_service.forms import StreamerForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
+
 @login_required
 def get_favorite_streamer(request):
     if request.method == 'POST':
@@ -19,25 +20,32 @@ def get_favorite_streamer(request):
             form.instance = request.user
 
         if form.is_valid():
-            form.save()
             channel_info = get_channel_info(form.data['favorite_streamer'])
-            print(channel_info)
+            if type(channel_info['status']) is int:
+                return render(request, 'favorite_streamer.html', {
+                    'form': form,
+                    'error_message': "The streamer you set does not exist."
+                })
+            form.save()
             return redirect('stream')
     else:
-        form = StreamerForm()
+        form = StreamerForm(initial={
+            'favorite_streamer': request.user.favorite_streamer
+        })
 
     return render(request, 'favorite_streamer.html', {'form': form})
 
+
 @login_required
 def get_stream(request):
-    url = request.get_host()
     callback_url = request.build_absolute_uri('/callback/')
-    print(callback_url)
     subscribe_to_follows(request.user.favorite_streamer, callback_url)
-    latest_events = get_latest_events(request.user.favorite_streamer)
-    print(latest_events)
-    return render(request, 'stream.html', {'user': request.user, 'url': url,
-                                           'latest_events': latest_events})
+
+    return render(request, 'stream.html', {
+        'user': request.user,
+        'url': request.get_host(),
+        'latest_events': get_latest_events(request.user.favorite_streamer)
+    })
 
 
 def login(request):
@@ -45,9 +53,11 @@ def login(request):
         return redirect('stream')
     return render(request, 'login.html', { 'login_url': '/login/twitch/'})
 
+
 def logout_view(request):
     logout(request)
     return redirect('login')
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class WebHookView(CreateView):

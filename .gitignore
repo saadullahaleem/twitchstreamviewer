@@ -2,3 +2,5 @@ venv/*
 streameventviewer/local.py
 .DS_Store
 .idea/*
+db/
+__pycache__/

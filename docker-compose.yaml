@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres:9.6
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./db:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=stream_service
+
+  stream_app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "7000:7000"
+    volumes:
+      - "./:/streameventviewer"
+    command: sh -c "./streameventviewer/manage.py wait_for_db &&
+            python ./streameventviewer/manage.py migrate &&
+            python ./streameventviewer/manage.py runserver 0.0.0.0:7000"
+    depends_on:
+      - postgres
+      - redis
+
+  redis:
+    image: redis:3.2
+    ports:
+      - "6379:6379"
