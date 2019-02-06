@@ -50,7 +50,7 @@ Following diagram illustrates this architecture:
 
 > -   Where do you see bottlenecks in your proposed architecture and how would you approach scaling this app starting from 100 reqs/day to 900MM reqs/day over 6 months?
 
-For something like 900M reqs/day, an event-sourcing based approach could be far more effective. We could also use Server Sent Events (SSE) here since data is only being pushed by the server and not the other way around. Also, I've only used PostgreSQL because of how well it plays with my framework of choice here. If I were to write this application for production, I'd use something like elixir paired with a real-time database.
+For something like 900M reqs/day, an event-sourcing based approach could be far more effective. We could also use Server Sent Events (SSE) here since data is only being pushed by the server and not the other way around. Also, I've only used PostgreSQL because of how well it plays with my framework of choice here. If I were to write this application for production, I'd use something like elixir or go paired with a write-optimized database (since we're only reading from the database when the user initially connects to the stream).
 
 If we were to scale this application, we'll need to scale out Redis into a cluster to support scaling of websockets which we're using for real-tme updates. We'll need to be careful with our load-balancing of websockets (we'll need TCP proxies instead of HTTP ones).
 
