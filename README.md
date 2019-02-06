@@ -13,7 +13,12 @@ This app lets a user log in with their twitch account and set their favorite str
 - The user is redirected to the stream page which has the embedded stream along with a list of 10 most recent follows that the user has received. 
 - These events are initially fetched through the database but the new ones are pushed through the websocket as they happen.
 
-Additionally, I also wanted to have cheers/bits received through viewers as events by using Twitch's [IRC interface](https://dev.twitch.tv/docs/irc/). I've made a bot that listens to the incoming chat messages and filters out the ones with cheers but incorporating it would have required either celery or python-rq for which I didn't have any time left. If you'd like to check out how the IRC interface is used to notify when bits/cheers are received, you can view the sample code in [this repo.](https://github.com/saadullahaleem/twitch-chat-bot/blob/master/bot.py)
+**Assumptions and Restrictions:**
+- Please note that due to the limited free plan and the high amount of events, I've limited the number of events per streamer to 100 in the database.
+- I've assumed that events here mean events like when a user follows a streamer and not calendar events since having real-time updates for those wouldn't really make any sense.
+- I have only incorporated user follows as events.
+- Additionally, I also wanted to have cheers/bits received through viewers as events by using Twitch's [IRC interface](https://dev.twitch.tv/docs/irc/). I chose not to incorporate cheers because of time constraints. If you'd like to check out how the IRC interface is used to notify when bits/cheers are received, you can view the sample code in [this repo.](https://github.com/saadullahaleem/twitch-chat-bot/blob/master/bot.py)
+
 
 **Answers to Questions:**
 
