@@ -21,6 +21,8 @@ Additionally, I also wanted to have cheers/bits received through viewers as even
 
 I'd use Amazon's RDS and ElastiCache for PostGreSQL and Redis respectively. I'll use Elastic Container Service to run containerized instances of our server.
 
+Following diagram illustrates this architecture:
+
                                      +------------------------------------------------+      
                                      |                                                |
                                      |                                                |
@@ -52,4 +54,4 @@ For something like 900M reqs/day, an event-sourcing based approach could be far 
 
 If we were to scale this application, we'll need to scale out Redis into a cluster to support scaling of websockets which we're using for real-tme updates. We'll need to be careful with our load-balancing of websockets (we'll need TCP proxies instead of HTTP ones).
 
- We'll also need to implement caching and have multiple instances of our server behind a load balancer.
+ We'll also need to implement caching and have multiple instances of our server behind a load balancer. Our consumption of the Twitch API's will also need to be scaled with multiple Client Ids required to support such a large number of requests.
