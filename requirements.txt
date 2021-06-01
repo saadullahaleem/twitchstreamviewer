@@ -43,5 +43,5 @@ social-auth-core==3.0.0
 tempora==1.14
 Twisted==18.9.0
 txaio==18.8.1
-urllib3==1.24.1
+urllib3==1.26.5
 zope.interface==4.6.0
